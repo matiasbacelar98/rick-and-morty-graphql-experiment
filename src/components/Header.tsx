@@ -6,7 +6,7 @@ export default function Header() {
     <header className='py-3 shadow-md'>
       <Container>
         <div className='flex items-center justify-between'>
-          <h1 className='text-lg font-semibold text-slate-700'>Countries</h1>
+          <h1 className='text-lg font-semibold'>Countries</h1>
           <ThemeToggle />
         </div>
       </Container>

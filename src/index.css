@@ -6,4 +6,8 @@
   .icon {
     @apply stroke-slate-700;
   }
+
+  .dark .icon {
+    @apply stroke-white;
+  }
 }

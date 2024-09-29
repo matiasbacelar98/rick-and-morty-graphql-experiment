@@ -10,7 +10,7 @@ export default function App() {
       <ThemeProvider>
         <Header />
         <Container>
-          <h1 className='text-3xl font-bold underline'>Working...</h1>
+          <h1>Working...</h1>
         </Container>
       </ThemeProvider>
     </ApolloProvider>

@@ -14,7 +14,15 @@ export function ThemeProvider({ children }: React.PropsWithChildren) {
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
-      <div className={theme === 'dark' ? 'dark' : ''}>{children}</div>
+      <div
+        className={
+          theme === 'dark'
+            ? 'dark bg-slate-800 text-white'
+            : 'bg-white text-slate-700'
+        }
+      >
+        {children}
+      </div>
     </ThemeContext.Provider>
   );
 }
