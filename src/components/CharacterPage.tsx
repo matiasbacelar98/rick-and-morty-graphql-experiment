@@ -1,5 +1,9 @@
+import React from 'react';
+
 import Container from './Container';
 import CharacterList from './CharacterList';
+import CharacterSearch from './CharacterSearch';
+import CharacterStatus from './CharacterStatus';
 
 const dummyCharacters = [
   {
@@ -53,9 +57,18 @@ const dummyCharacters = [
 ];
 
 export default function CharacterPage() {
+  const [value, setValue] = React.useState('');
+
   return (
     <Container>
-      <CharacterList characters={dummyCharacters} />
+      <div className='flex flex-col gap-y-10'>
+        <div className='flex flex-col sm:flex-row sm:items-center sm:justify-between gap-y-6 sm:gap-x-4 mt-10'>
+          <CharacterSearch value={value} onSearch={value => setValue(value)} />
+          <CharacterStatus />
+        </div>
+
+        <CharacterList characters={dummyCharacters} />
+      </div>
     </Container>
   );
 }

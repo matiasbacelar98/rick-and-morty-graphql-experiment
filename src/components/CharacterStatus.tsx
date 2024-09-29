@@ -1,3 +1,3 @@
 export default function CharacterStatus() {
-  return 'CharacterStatus';
+  return <p>CharacterStatus</p>;
 }
