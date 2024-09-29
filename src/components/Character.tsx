@@ -1,10 +1,4 @@
-type CharacterType = {
-  imgSrc: string;
-  name: string;
-  species: string;
-  status: string;
-  origin: string;
-};
+import { CharacterType } from '../types';
 
 export default function Character({
   name,
