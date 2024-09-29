@@ -6,3 +6,8 @@ export type CharacterType = {
   origin: string;
   id?: string;
 };
+
+export type CharacterStatusType = {
+  id: string;
+  value: string;
+};

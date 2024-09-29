@@ -56,15 +56,38 @@ const dummyCharacters = [
   },
 ];
 
+const dummyCharactersOptions = [
+  {
+    id: '1',
+    value: 'Alive',
+  },
+  {
+    id: '2',
+    value: 'Dead',
+  },
+  {
+    id: '3',
+    value: 'Unknown',
+  },
+];
+
 export default function CharacterPage() {
-  const [value, setValue] = React.useState('');
+  const [search, setSearch] = React.useState('');
+  const [status, setStatus] = React.useState('');
 
   return (
     <Container>
       <div className='flex flex-col gap-y-10'>
         <div className='flex flex-col sm:flex-row sm:items-center sm:justify-between gap-y-6 sm:gap-x-4 mt-10'>
-          <CharacterSearch value={value} onSearch={value => setValue(value)} />
-          <CharacterStatus />
+          <CharacterSearch
+            value={search}
+            onSearch={value => setSearch(value)}
+          />
+          <CharacterStatus
+            value={status}
+            onChange={value => setStatus(value)}
+            options={dummyCharactersOptions}
+          />
         </div>
 
         <CharacterList characters={dummyCharacters} />
