@@ -17,8 +17,8 @@ export function ThemeProvider({ children }: React.PropsWithChildren) {
       <div
         className={
           theme === 'dark'
-            ? 'dark bg-slate-800 text-white'
-            : 'bg-white text-slate-700'
+            ? 'dark bg-slate-800 text-white min-h-screen'
+            : 'bg-white text-slate-700 min-h-screen'
         }
       >
         {children}
