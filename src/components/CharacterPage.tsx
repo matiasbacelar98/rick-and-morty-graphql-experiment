@@ -19,7 +19,7 @@ export default function CharacterPage() {
     variables: { page: 1, status: '' },
   });
 
-  if (error) throw new Error();
+  if (error) throw new Error('Something went wrong!!!');
 
   return (
     <Container>
