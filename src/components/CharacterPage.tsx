@@ -9,12 +9,12 @@ import CharacterSearch from './CharacterSearch';
 import CharacterStatus from './CharacterStatus';
 
 export default function CharacterPage() {
+  const [status, setStatus] = useCharacterStatus();
+  const [search, setSearch] = useCharacterSearch();
+
   const { data } = useQuery(GET_ALL_CHARACTERS, {
     variables: { page: 1, status: '' },
   });
-
-  const [status, setStatus] = useCharacterStatus();
-  const [search, setSearch] = useCharacterSearch();
 
   return (
     <Container>
