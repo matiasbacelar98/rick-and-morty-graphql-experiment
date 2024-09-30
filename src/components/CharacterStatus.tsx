@@ -1,14 +1,12 @@
 import { ChevronDown } from 'tabler-icons-react';
-import { CharacterStatusType } from '../types';
 import React from 'react';
 
 type Props = {
   value: string;
   onChange: (value: string) => void;
-  options: CharacterStatusType[];
 };
 
-export default function CharacterStatus({ value, onChange, options }: Props) {
+export default function CharacterStatus({ value, onChange }: Props) {
   return (
     <div className='inline-block relative w-full max-w-60'>
       <select
@@ -16,7 +14,7 @@ export default function CharacterStatus({ value, onChange, options }: Props) {
         value={value}
         onChange={e => onChange(e.target.value)}
       >
-        <StatusOptions options={options} />
+        <StatusOptions />
       </select>
 
       <div className='pointer-events-none absolute inset-y-0 right-0 flex items-center px-5'>
@@ -26,13 +24,31 @@ export default function CharacterStatus({ value, onChange, options }: Props) {
   );
 }
 
-function StatusOptions({ options }: { options: CharacterStatusType[] }) {
+const options = [
+  {
+    id: '1',
+    name: 'Alive',
+    value: 'alive',
+  },
+  {
+    id: '2',
+    name: 'Dead',
+    value: 'dead',
+  },
+  {
+    id: '3',
+    name: 'Unknown',
+    value: 'unknown',
+  },
+];
+
+function StatusOptions() {
   return (
     <React.Fragment>
       <option value=''>Filter by status</option>
       {options.map(option => (
         <option key={option.id} value={option.value}>
-          {option.value}
+          {option.name}
         </option>
       ))}
     </React.Fragment>

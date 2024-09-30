@@ -5,12 +5,12 @@ export default function Character({
   species,
   status,
   origin,
-  imgSrc,
+  image,
 }: CharacterType) {
   return (
     <article className='shadow-md rounded overflow-hidden max-w-96'>
       <img
-        src={imgSrc}
+        src={image}
         alt='character'
         className='object-cover object-center h-64 w-96'
       />
@@ -31,7 +31,7 @@ export default function Character({
 
           <li className='flex items-center justify-between gap-x-2'>
             <p className='font-semibold'>Origin:</p>
-            <p className='truncate'>{origin}</p>
+            <p className='truncate'>{origin?.name || ''}</p>
           </li>
         </ul>
       </div>

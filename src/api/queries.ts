@@ -1,3 +1,23 @@
-export const GET_ALL_CHARACTER_STATUSES = ``;
+import { gql } from '@apollo/client';
 
-export const GET_ALL_CHARACTERS = ``;
+export const GET_ALL_CHARACTERS = gql`
+  query GetCharacters($page: Int, $status: String) {
+    characters(page: $page, filter: { status: $status }) {
+      info {
+        next
+        prev
+        count
+      }
+      results {
+        id
+        name
+        status
+        image
+        species
+        origin {
+          name
+        }
+      }
+    }
+  }
+`;

@@ -12,7 +12,7 @@ export default function CharacterList({ characters }: Props) {
         <Character
           key={character.id}
           species={character.species}
-          imgSrc={character.imgSrc}
+          image={character.image}
           status={character.status}
           origin={character.origin}
           name={character.name}

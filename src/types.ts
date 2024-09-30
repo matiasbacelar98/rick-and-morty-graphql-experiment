@@ -1,13 +1,12 @@
 export type CharacterType = {
-  imgSrc: string;
-  name: string;
-  species: string;
-  status: string;
-  origin: string;
   id?: string;
-};
-
-export type CharacterStatusType = {
-  id: string;
-  value: string;
+  image: string;
+  name: string;
+  origin: {
+    _typename: string;
+    name: string;
+  };
+  status: string;
+  _typename?: string;
+  species: string;
 };
