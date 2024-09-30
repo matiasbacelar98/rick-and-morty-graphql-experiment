@@ -8,6 +8,7 @@ import Container from './Container';
 import CharacterList from './CharacterList';
 import CharacterSearch from './CharacterSearch';
 import CharacterStatus from './CharacterStatus';
+import CharacterListSkeleton from './CharacterListSkeleton';
 
 export default function CharacterPage() {
   const [status, setStatus] = useCharacterStatus();
@@ -33,8 +34,8 @@ export default function CharacterPage() {
           />
         </div>
 
-        {true ? (
-          <div>Loading...</div>
+        {loading ? (
+          <CharacterListSkeleton />
         ) : (
           <CharacterList characters={data?.characters?.results || []} />
         )}
