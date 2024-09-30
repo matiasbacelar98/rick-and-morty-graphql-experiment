@@ -1,5 +1,6 @@
 import React from 'react';
 import { useQuery } from '@apollo/client';
+import { InView } from 'react-intersection-observer';
 
 import { GET_ALL_CHARACTERS } from '../api';
 
@@ -12,9 +13,11 @@ export default function CharacterPage() {
   const [status, setStatus] = useCharacterStatus();
   const [search, setSearch] = useCharacterSearch();
 
-  const { data } = useQuery(GET_ALL_CHARACTERS, {
+  const { data, loading, error } = useQuery(GET_ALL_CHARACTERS, {
     variables: { page: 1, status: '' },
   });
+
+  if (error) throw new Error();
 
   return (
     <Container>
@@ -30,7 +33,22 @@ export default function CharacterPage() {
           />
         </div>
 
-        <CharacterList characters={data?.characters?.results || []} />
+        {true ? (
+          <div>Loading...</div>
+        ) : (
+          <CharacterList characters={data?.characters?.results || []} />
+        )}
+
+        {data?.characters?.results ? (
+          <InView
+            as='div'
+            onChange={inView => {
+              if (inView) {
+                console.log('Fire fetchMore - Infinite Scrolling');
+              }
+            }}
+          />
+        ) : null}
       </div>
     </Container>
   );
