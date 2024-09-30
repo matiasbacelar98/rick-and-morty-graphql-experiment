@@ -1,6 +1,8 @@
 import React from 'react';
+
 import { useQuery } from '@apollo/client';
 import { InView } from 'react-intersection-observer';
+import { InfinitySpin } from 'react-loader-spinner';
 
 import { GET_ALL_CHARACTERS } from '../api';
 
@@ -15,7 +17,9 @@ export default function CharacterPage() {
   const [status, setStatus] = useCharacterStatus();
   const [search, setSearch] = useCharacterSearch();
 
-  const { data, loading, error } = useQuery(GET_ALL_CHARACTERS, {
+  const [scrollLoading, setScrollLoading] = React.useState(true);
+
+  const { data, loading, error, fetchMore } = useQuery(GET_ALL_CHARACTERS, {
     variables: { page: 1, status: '' },
   });
 
@@ -43,11 +47,40 @@ export default function CharacterPage() {
           <InView
             as='div'
             onChange={inView => {
-              if (inView) {
-                console.log('Fire fetchMore - Infinite Scrolling');
+              const nextPage = data?.characters?.info?.next;
+
+              if (inView && nextPage) {
+                setScrollLoading(true);
+
+                fetchMore({
+                  variables: { page: nextPage, status: status },
+                  updateQuery: (previousResult, { fetchMoreResult }) => {
+                    if (!fetchMoreResult) return previousResult;
+
+                    const newResultsObject = {
+                      characters: {
+                        ...fetchMoreResult.characters,
+                        results: [
+                          ...previousResult.characters.results,
+                          ...fetchMoreResult.characters.results,
+                        ],
+                      },
+                    };
+
+                    return newResultsObject;
+                  },
+                }).then(result => {
+                  setScrollLoading(result.loading);
+                });
               }
             }}
           />
+        </Show>
+
+        <Show when={scrollLoading} fallback={null}>
+          <div className='flex items-center justify-center scroll-spinner'>
+            <InfinitySpin width='200' />
+          </div>
         </Show>
       </div>
     </Container>

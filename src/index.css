@@ -30,4 +30,12 @@ input[type='search']::-webkit-search-results-decoration {
   .dark .icon {
     @apply stroke-white;
   }
+
+  .scroll-spinner svg path {
+    @apply stroke-slate-700;
+  }
+
+  .dark .scroll-spinner svg path {
+    @apply stroke-white;
+  }
 }
