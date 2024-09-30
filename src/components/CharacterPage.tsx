@@ -5,6 +5,7 @@ import { InView } from 'react-intersection-observer';
 import { GET_ALL_CHARACTERS } from '../api';
 
 import Container from './Container';
+import Show from './Show';
 import CharacterList from './CharacterList';
 import CharacterSearch from './CharacterSearch';
 import CharacterStatus from './CharacterStatus';
@@ -34,13 +35,11 @@ export default function CharacterPage() {
           />
         </div>
 
-        {loading ? (
-          <CharacterListSkeleton />
-        ) : (
+        <Show when={!loading} fallback={<CharacterListSkeleton />}>
           <CharacterList characters={data?.characters?.results || []} />
-        )}
+        </Show>
 
-        {data?.characters?.results ? (
+        <Show when={data?.characters?.results} fallback={null}>
           <InView
             as='div'
             onChange={inView => {
@@ -49,7 +48,7 @@ export default function CharacterPage() {
               }
             }}
           />
-        ) : null}
+        </Show>
       </div>
     </Container>
   );
