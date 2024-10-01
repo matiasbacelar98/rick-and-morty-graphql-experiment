@@ -9,6 +9,7 @@ import { InView } from 'react-intersection-observer';
 import { InfinitySpin } from 'react-loader-spinner';
 
 import { GET_ALL_CHARACTERS } from '../api';
+import { useDebounce } from '../hooks';
 
 import Container from './Container';
 import Show from './Show';
@@ -18,16 +19,17 @@ import CharacterStatus from './CharacterStatus';
 import CharacterListSkeleton from './CharacterListSkeleton';
 
 export default function CharacterPage() {
-  const [scrollLoading, setScrollLoading] = React.useState(true);
-
   const { data, loading, error, fetchMore, refetch } = useQuery(
     GET_ALL_CHARACTERS,
     {
-      variables: { page: 1, status: '' },
+      variables: { page: 1, status: '', name: '' },
     }
   );
 
-  const [status, setStatus] = useCharacterStatus(refetch);
+  const { status, setStatus, search, setSearch } =
+    useCharactersFilters(refetch);
+
+  const [scrollLoading, setScrollLoading] = React.useState<boolean>(true);
 
   if (error) throw new Error('Something went wrong!!!');
 
@@ -35,7 +37,10 @@ export default function CharacterPage() {
     <Container>
       <div className='flex flex-col gap-y-10 mb-10'>
         <div className='flex flex-col sm:flex-row sm:items-center sm:justify-between gap-y-6 sm:gap-x-4 mt-10'>
-          <CharacterSearch value={''} onSearch={value => console.log(value)} />
+          <CharacterSearch
+            value={search}
+            onSearch={value => setSearch(value)}
+          />
           <CharacterStatus
             value={status}
             onChange={value => setStatus(value)}
@@ -56,7 +61,7 @@ export default function CharacterPage() {
                 setScrollLoading(true);
 
                 fetchMore({
-                  variables: { page: nextPage, status: status },
+                  variables: { page: nextPage, status: status, name: search },
                   updateQuery: (previousResult, { fetchMoreResult }) => {
                     if (!fetchMoreResult) return previousResult;
 
@@ -90,16 +95,19 @@ export default function CharacterPage() {
   );
 }
 
-function useCharacterStatus(
+function useCharactersFilters(
   refetchCharacters: (
     variables?: Partial<OperationVariables> | undefined
   ) => Promise<ApolloQueryResult<unknown>>
-): [string, React.Dispatch<React.SetStateAction<string>>] {
+) {
   const [status, setStatus] = React.useState<string>('');
+  const [search, setSearch] = React.useState<string>('');
+
+  const debouncedSearch = useDebounce(search);
 
   React.useEffect(() => {
-    refetchCharacters({ page: 1, status: status });
-  }, [status, refetchCharacters]);
+    refetchCharacters({ page: 1, status: status, name: debouncedSearch });
+  }, [status, refetchCharacters, debouncedSearch]);
 
-  return [status, setStatus];
+  return { status, setStatus, search, setSearch };
 }
