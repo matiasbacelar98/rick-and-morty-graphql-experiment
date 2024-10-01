@@ -19,9 +19,12 @@ export default function CharacterPage() {
 
   const [scrollLoading, setScrollLoading] = React.useState(true);
 
-  const { data, loading, error, fetchMore } = useQuery(GET_ALL_CHARACTERS, {
-    variables: { page: 1, status: '' },
-  });
+  const { data, loading, error, fetchMore, refetch } = useQuery(
+    GET_ALL_CHARACTERS,
+    {
+      variables: { page: 1, status: '' },
+    }
+  );
 
   if (error) throw new Error('Something went wrong!!!');
 
