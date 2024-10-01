@@ -1,6 +1,10 @@
 import React from 'react';
 
-import { useQuery } from '@apollo/client';
+import {
+  ApolloQueryResult,
+  OperationVariables,
+  useQuery,
+} from '@apollo/client';
 import { InView } from 'react-intersection-observer';
 import { InfinitySpin } from 'react-loader-spinner';
 
@@ -14,9 +18,6 @@ import CharacterStatus from './CharacterStatus';
 import CharacterListSkeleton from './CharacterListSkeleton';
 
 export default function CharacterPage() {
-  const [status, setStatus] = useCharacterStatus();
-  const [search, setSearch] = useCharacterSearch();
-
   const [scrollLoading, setScrollLoading] = React.useState(true);
 
   const { data, loading, error, fetchMore, refetch } = useQuery(
@@ -26,16 +27,15 @@ export default function CharacterPage() {
     }
   );
 
+  const [status, setStatus] = useCharacterStatus(refetch);
+
   if (error) throw new Error('Something went wrong!!!');
 
   return (
     <Container>
       <div className='flex flex-col gap-y-10 mb-10'>
         <div className='flex flex-col sm:flex-row sm:items-center sm:justify-between gap-y-6 sm:gap-x-4 mt-10'>
-          <CharacterSearch
-            value={search}
-            onSearch={value => setSearch(value)}
-          />
+          <CharacterSearch value={''} onSearch={value => console.log(value)} />
           <CharacterStatus
             value={status}
             onChange={value => setStatus(value)}
@@ -90,20 +90,16 @@ export default function CharacterPage() {
   );
 }
 
-// ToDo =>
-function useCharacterSearch(): [
-  string,
-  React.Dispatch<React.SetStateAction<string>>
-] {
-  const [search, setSearch] = React.useState<string>('');
-  return [search, setSearch];
-}
-
-// ToDo =>
-function useCharacterStatus(): [
-  string,
-  React.Dispatch<React.SetStateAction<string>>
-] {
+function useCharacterStatus(
+  refetchCharacters: (
+    variables?: Partial<OperationVariables> | undefined
+  ) => Promise<ApolloQueryResult<unknown>>
+): [string, React.Dispatch<React.SetStateAction<string>>] {
   const [status, setStatus] = React.useState<string>('');
+
+  React.useEffect(() => {
+    refetchCharacters({ page: 1, status: status });
+  }, [status, refetchCharacters]);
+
   return [status, setStatus];
 }
